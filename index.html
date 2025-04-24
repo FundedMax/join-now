@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>FundedMax - Compete for Funded Accounts</title>
+    
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #0a0e17;
+            color: #fff;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        
+        a:hover {
+            color: #6c5ce7;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(10, 14, 23, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: #6c5ce7;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-left: 30px;
+            position: relative;
+        }
+        
+        .nav-menu li a {
+            font-weight: 500;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 200px;
+            background-color: #121826;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            padding: 10px 0;
+            z-index: 100;
+        }
+        
+        .nav-menu li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu li {
+            margin: 0;
+        }
+        
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 20px;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.2s;
+            animation-fill-mode: both;
+        }
+        
+        .hero-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            animation: fadeInUp 1s ease 0.4s;
+            animation-fill-mode: both;
+        }
+        
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+            color: #fff;
+        }
+        
+        .hero-image {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 45%;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* Competition Cards */
+        .competitions {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .competition-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .competition-card {
+            width: 300px;
+            background-color: #121826;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .competition-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
+        }
+        
+        .card-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .competition-card:hover .card-image img {
+            transform: scale(1.1);
+        }
+        
+        .wishlist-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .card-content {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .card-content h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .card-content .price {
+            font-size: 20px;
+            font-weight: 600;
+            color: #6c5ce7;
+        }
+        
+        .join-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        /* How It Works Section */
+        .how-it-works {
+            padding: 100px 0;
+            background-color: #0d121e;
+        }
+        
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .step-box {
+            width: 250px;
+            text-align: center;
+            position: relative;
+            padding: 30px 20px;
+            background-color: #121826;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(108, 92, 231, 0.1);
+            border-radius: 50%;
+        }
+        
+        .step-icon img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .step-box h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        
+        .arrow {
+            position: absolute;
+            top: 50%;
+            right: -45px;
+            transform: translateY(-50%);
+            color: #6c5ce7;
+            font-size: 24px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #0d121e;
+            padding: 80px 0 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 50px;
+        }
+        
+        .footer-widget {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-widget h5 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-widget h5:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #6c5ce7;
+        }
+        
+        .footer-widget ul {
+            list-style: none;
+        }
+        
+        .footer-widget ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(-50%) translateX(0);
+            }
+            50% {
+                transform: translateY(-53%) translateX(-10px);
+            }
+            100% {
+                transform: translateY(-50%) translateX(0);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+                text-align: center;
+            }
+            
+            .hero-image {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .section-title h2 {
+                font-size: 30px;
+            }
+            
+            .footer-content {
+                justify-content: center;
+            }
+            
+            .footer-widget {
+                text-align: center;
+                margin: 0 auto 30px;
+            }
+            
+            .footer-widget h5:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0a0e17; display: flex; justify-content: center; align-items: center; z-index: 9999;">
+        <div style="display: flex; gap: 5px;">
+            <div style="width: 8px; height: 40px; background-color: #6c5ce7; animation: loading 1.2s ease-in-out infinite; animation-delay: 0s;"></div>
+            <div style="width: 8px; height: 40px; background-color: #6c5ce7; animation: loading 1.2s ease-in-out infinite; animation-delay: 0.1s;"></div>
+            <div style="width: 8px; height: 40px; background-color: #6c5ce7; animation: loading 1.2s ease-in-out infinite; animation-delay: 0.2s;"></div>
+            <div style="width: 8px; height: 40px; background-color: #6c5ce7; animation: loading 1.2s ease-in-out infinite; animation-delay: 0.3s;"></div>
+            <div style="width: 8px; height: 40px; background-color: #6c5ce7; animation: loading 1.2s ease-in-out infinite; animation-delay: 0.4s;"></div>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes loading {
+            0%, 100% {
+                height: 20px;
+            }
+            50% {
+                height: 40px;
+            }
+        }
+    </style>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="/">Funded<span>Max</span></a>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li>
+                        <a href="#">Home</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="how-it-works.html">How It Works</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Explore</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="competitions.html">Competitions</a></li>
+                            <li><a href="ended-competitions.html">Ended Competitions</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="https://discord.gg/bJJFzyHKAT">Discord</a></li>
+                </ul>
+                
+                <button class="mobile-menu-btn">
+                    <i>☰</i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>FundedMax</h1>
+                <p>Join our exclusive funded trading challenge for just $6 and win a $10,000 Funded Account
+Our innovative funding system is designed to help traders with limited capital. 
+</p></p>
+                <a href="competitions.html" class="hero-btn">Get Funded Now!</a>
+            </div>
+            
+            <img src="/api/placeholder/600/500" alt="Trading Illustration" class="hero-image">
+        </div>
+    </section>
+
+    <!-- Competition Cards Carousel -->
+    <section class="competitions">
+        <div class="container">
+            <div class="section-title">
+                <h2>Join our trading competitions </h2>
+                <p>Get Funded Without Breaking The Bank.</p>
+            </div>
+            
+            <div class="competition-cards">
+                
+                
+                <div class="competition-card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/300/200" alt="10K Funded Competition">
+                        <div class="wishlist-btn">❤</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>10K FUNDED COMPETITION</h3>
+                        <p class="price">$5.99</p>
+                        <a href="competitions.html" class="join-btn">Join</a>
+                    </div>
+                </div>
+                
+                <div class="competition-card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/300/200" alt="10K Funded Competition">
+                        <div class="wishlist-btn">❤</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>10K FUNDED COMPETITION</h3>
+                        <p class="price">$5.99</p>
+                        <a href="competitions.html" class="join-btn">Join</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-title">
+              <div class="section-title">
+                <h2>How Our System Works</h2>
+                <p>You Trade. You Win. We Fund, fully paid by us</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step-box">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <img src="/api/placeholder/40/40" alt="Join Discord">
+                    </div>
+                    <h3>Join our discord</h3>
+                    <p>Connect with our community of traders</p>
+                    <div class="arrow">→</div>
+                </div>
+                
+                <div class="step-box">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <img src="/api/placeholder/40/40" alt="Select Competition">
+                    </div>
+                    <h3>Select a competition</h3>
+                    <p>Choose from our various trading challenges</p>
+                    <div class="arrow">→</div>
+                </div>
+                
+                <div class="step-box">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <img src="/api/placeholder/40/40" alt="Compete">
+                    </div>
+                    <h3>Compete with other traders</h3>
+                    <p>Show your trading skills against others</p>
+                    <div class="arrow">→</div>
+                </div>
+                
+                <div class="step-box">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">
+                        <img src="/api/placeholder/40/40" alt="Win">
+                    </div>
+                    <h3>Win funded account challenges</h3>
+                    <p>Get access to funded trading accounts</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-widget">
+                    <h5>About FundedMax</h5>
+                    <p>Your journey to get funded even on a tight budget. Join our trading competitions with micro fees and earn the opportunity to win fully funded trading challenge accounts.</p>
+                </div>
+                
+                <div class="footer-widget">
+                    <h5>Useful Links</h5>
+                    <ul>
+                        <li><a href="terms-condition.html">Terms & Conditions</a></li>
+                        <li><a href="challenge-rules.html">Challenge Rules</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-widget">
+                    <h5>Connect With Us</h5>
+                    <ul>
+                        <li><a href="https://discord.gg/bJJFzyHKAT">Discord</a></li>
+                        <li><a href="mailto:ourfundedmax@gmail.com">Email Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 FundedMax. All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        });
+        
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        });
+        
+        // Responsive Nav Menu
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 992) {
+                navMenu.style.display = 'flex';
+            } else {
+                navMenu.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>FundedMax - Ended Competitions</title>
+    
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #0a0e17;
+            color: #fff;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        
+        a:hover {
+            color: #6c5ce7;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(10, 14, 23, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: #6c5ce7;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-left: 30px;
+            position: relative;
+        }
+        
+        .nav-menu li a {
+            font-weight: 500;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 200px;
+            background-color: #121826;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            padding: 10px 0;
+            z-index: 100;
+        }
+        
+        .nav-menu li:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu li {
+            margin: 0;
+        }
+        
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 20px;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Page Header */
+        .page-header {
+            padding: 150px 0 80px;
+            text-align: center;
+            background: linear-gradient(rgba(10, 14, 23, 0.8), rgba(10, 14, 23, 0.9)), url('/api/placeholder/1200/400') no-repeat center center;
+            background-size: cover;
+        }
+        
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease 0.2s;
+            animation-fill-mode: both;
+        }
+        
+        /* Competition Archive */
+        .competition-archive {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background-color: #121826;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 0 5px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background-color: #1a2235;
+        }
+        
+        /* Competition Cards */
+        .competition-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .ended-competition-card {
+            width: 100%;
+            max-width: 350px;
+            background-color: #121826;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .ended-competition-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
+        }
+        
+        .card-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .competition-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .competition-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #b3b3b3;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .meta-item i {
+            margin-right: 5px;
+            color: #6c5ce7;
+        }
+        
+        .winner-section {
+            background-color: rgba(108, 92, 231, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .winner-section h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #6c5ce7;
+        }
+        
+        .winner-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .winner-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+        
+        .winner-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .winner-info h5 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .winner-info p {
+            color: #6c5ce7;
+            font-weight: 600;
+        }
+        
+        .top-traders-toggle {
+            background-color: transparent;
+            border: none;
+            color: #6c5ce7;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            margin-top: 15px;
+        }
+        
+        .top-traders-toggle i {
+            margin-left: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .top-traders-toggle.active i {
+            transform: rotate(180deg);
+        }
+        
+        .top-traders {
+            display: none;
+            margin-top: 15px;
+        }
+        
+        .top-traders.active {
+            display: block;
+        }
+        
+        .trader-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .trader-item:last-child {
+            border-bottom: none;
+        }
+        
+        .trader-rank {
+            width: 25px;
+            height: 25px;
+            background-color: rgba(108, 92, 231, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        
+        .trader-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .trader-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+        }
+        
+        .trader-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .trader-name {
+            font-size: 14px;
+        }
+        
+        .trader-profit {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4cd137;
+        }
+        
+        .view-details-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+            border-radius: 30px;
+            font-weight: 600;
+            margin-top: 15px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .view-details-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+            color: #fff;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 60px;
+        }
+        
+        .pagination-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #121826;
+            color: #fff;
+            border-radius: 5px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination-btn.active {
+            background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+        }
+        
+        .pagination-btn:hover:not(.active) {
+            background-color: #1a2235;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(rgba(10, 14, 23, 0.9), rgba(10, 14, 23, 0.95)), url('/api/placeholder/1200/400') no-repeat center center;
+            background-size: cover;
+        }
+        
+        .cta-section h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
+            color: #fff;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #0d121e;
+            padding: 80px 0 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 50px;
+        }
+        
+        .footer-widget {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-widget h5 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-widget h5:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #6c5ce7;
+        }
+        
+        .footer-widget ul {
+            list-style: none;
+        }
+        
+        .footer-widget ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 36px;
+            }
+            
+            .page-header p {
+                font-size: 16px;
+            }
+            
+            .section-title h2 {
+                font-size: 30px;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                margin-bottom: 10px;
+            }
+            
+            .competition-cards {
+                justify-content: center;
+            }
+            
+            .ended-competition-card {
+                max-width: 100%;
+            }
+            
+            .footer-content {
+                justify-content: center;
+            }
+            
+            .footer-widget {
+                text-align: center;
+                margin: 0 auto 30px;
+            }
+            
+            .footer-widget h5:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0a0e17; display: flex; justify-content: center; align-items: center; z-index: 9999;">
+        <div style="display: flex; gap: 5px;">
+            <div style="width: 8px; height: 40px; background-color: #6c5ce7; animation: loading 1.2s ease-in-out infinite; animation-delay: 0s;"></div>
+            <div style="width: 8px; height: 40px; background-color: #6c5ce7; animation: loading 1.2s ease-in-out infinite; animation-delay: 0.1s;"></div>
+            <div style="width: 8px; height: 40px; background-color: #6c5ce7; animation: loading 1.2s ease-in-out infinite; animation-delay: 0.2s;"></div>
+            <div style="width: 8px; height: 40px; background-color: #6c5ce7; animation: loading 1.2s ease-in-out infinite; animation-delay: 0.3s;"></div>
+            <div style="width: 8px; height: 40px; background-color: #6c5ce7; animation: loading 1.2s ease-in-out infinite; animation-delay: 0.4s;"></div>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes loading {
+            0%, 100% {
+                height: 20px;
+            }
+            50% {
+                height: 40px;
+            }
+        }
+    </style>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="/">Funded<span>Max</span></a>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li>
+                        <a href="#">Home</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="how-it-works.html">How It Works</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Explore</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="competitions.html">Competitions</a></li>
+                            <li><a href="ended-competitions.html">Ended Competitions</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="https://discord.gg/bJJFzyHKAT">Discord</a></li>
+                </ul>
+                
+                <button class="mobile-menu-btn">
+                    <i>☰</i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Ended Competitions</h1>
+            <p>Explore our past competitions and see the traders who succeeded in winning funded accounts</p>
+        </div>
+    </section>
+
+    <!-- Competition Archive -->
+    <section class="competition-archive">
+        <div class="container">
+            <div class="section-title">
+                <h2>Past Trading Competitions</h2>
+                <p>Check out our competition history and the talented traders who conquered the challenges</p>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab-btn active">All Competitions</button>
+                <button class="tab-btn">10K Competitions</button>
+                <button class="tab-btn">25K Competitions</button>
+            </div>
+            
+            <div class="competition-cards">
+                <!-- Competition Card 1 -->
+                <div class="ended-competition-card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/350/200" alt="10K Funded Competition - March 2025">
+                        <div class="competition-badge">10K Funded</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>10K Funded Competition</h3>
+                        <div class="competition-meta">
+                            <div class="meta-item">
+                                <i>📅</i>
+                                <span>March 15-30, 2025</span>
+                            </div>
+                            <div class="meta-item">
+                                <i>👥</i>
+                                <span>128 Participants</span>
+                            </div>
+                        </div>
+                        
+                        <div class="winner-section">
+                            <h4>Competition Winner</h4>
+                            <div class="winner-profile">
+                                <div class="winner-avatar">
+                                    <img src="/api/placeholder/50/50" alt="Alex Trader">
+                                </div>
+                                <div class="winner-info">
+                                    <h5>Alex Trader</h5>
+                                    <p>+18.7% Profit</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="top-traders-toggle">
+                            View Top 5 Traders <i>▼</i>
+                        </button>
+                        
+                        <div class="top-traders">
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">1</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Alex Trader">
+                                    </div>
+                                    <div class="trader-name">Alex Trader</div>
+                                </div>
+                                <div class="trader-profit">+18.7%</div>
+                            </div>
+                            
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">2</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Sarah FX">
+                                    </div>
+                                    <div class="trader-name">Sarah FX</div>
+                                </div>
+                                <div class="trader-profit">+16.3%</div>
+                            </div>
+                            
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">3</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Mike Scalper">
+                                    </div>
+                                    <div class="trader-name">Mike Scalper</div>
+                                </div>
+                                <div class="trader-profit">+15.2%</div>
+                            </div>
+                            
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">4</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="John DayTrader">
+                                    </div>
+                                    <div class="trader-name">John DayTrader</div>
+                                </div>
+                                <div class="trader-profit">+13.8%</div>
+                            </div>
+                            
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">5</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Emma Chart">
+                                    </div>
+                                    <div class="trader-name">Emma Chart</div>
+                                </div>
+                                <div class="trader-profit">+12.1%</div>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="view-details-btn">View Full Results</a>
+                    </div>
+                </div>
+                
+                <!-- Competition Card 2 -->
+                <div class="ended-competition-card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/350/200" alt="10K Funded Competition - February 2025">
+                        <div class="competition-badge">10K Funded</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>10K Funded Competition</h3>
+                        <div class="competition-meta">
+                            <div class="meta-item">
+                                <i>📅</i>
+                                <span>February 10-25, 2025</span>
+                            </div>
+                            <div class="meta-item">
+                                <i>👥</i>
+                                <span>156 Participants</span>
+                            </div>
+                        </div>
+                        
+                        <div class="winner-section">
+                            <h4>Competition Winner</h4>
+                            <div class="winner-profile">
+                                <div class="winner-avatar">
+                                    <img src="/api/placeholder/50/50" alt="Sophia Trading">
+                                </div>
+                                <div class="winner-info">
+                                    <h5>Sophia Trading</h5>
+                                    <p>+21.3% Profit</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="top-traders-toggle">
+                            View Top 5 Traders <i>▼</i>
+                        </button>
+                        
+                        <div class="top-traders">
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">1</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Sophia Trading">
+                                    </div>
+                                    <div class="trader-name">Sophia Trading</div>
+                                </div>
+                                <div class="trader-profit">+21.3%</div>
+                            </div>
+                            
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">2</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Daniel Pro">
+                                    </div>
+                                    <div class="trader-name">Daniel Pro</div>
+                                </div>
+                                <div class="trader-profit">+19.7%</div>
+                            </div>
+                            
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">3</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Ryan Forex">
+                                    </div>
+                                    <div class="trader-name">Ryan Forex</div>
+                                </div>
+                                <div class="trader-profit">+17.9%</div>
+                            </div>
+                            
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">4</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Lisa Chart">
+                                    </div>
+                                    <div class="trader-name">Lisa Chart</div>
+                                </div>
+                                <div class="trader-profit">+16.2%</div>
+                            </div>
+                            
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">5</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Tom Scalper">
+                                    </div>
+                                    <div class="trader-name">Tom Scalper</div>
+                                </div>
+                                <div class="trader-profit">+15.4%</div>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="view-details-btn">View Full Results</a>
+                    </div>
+                </div>
+                
+                <!-- Competition Card 3 -->
+                <div class="ended-competition-card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/350/200" alt="25K Funded Competition - January 2025">
+                        <div class="competition-badge">25K Funded</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>25K Funded Competition</h3>
+                        <div class="competition-meta">
+                            <div class="meta-item">
+                                <i>📅</i>
+                                <span>January 5-20, 2025</span>
+                            </div>
+                            <div class="meta-item">
+                                <i>👥</i>
+                                <span>94 Participants</span>
+                            </div>
+                        </div>
+                        
+                        <div class="winner-section">
+                            <h4>Competition Winner</h4>
+                            <div class="winner-profile">
+                                <div class="winner-avatar">
+                                    <img src="/api/placeholder/50/50" alt="Marcus Swing">
+                                </div>
+                                <div class="winner-info">
+                                    <h5>Marcus Swing</h5>
+                                    <p>+24.5% Profit</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="top-traders-toggle">
+                            View Top 5 Traders <i>▼</i>
+                        </button>
+                        
+                        <div class="top-traders">
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">1</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Marcus Swing">
+                                    </div>
+                                    <div class="trader-name">Marcus Swing</div>
+                                </div>
+                                <div class="trader-profit">+24.5%</div>
+                            </div>
+                            
+                            <div class="trader-item">
+                                <div class="trader-profile">
+                                    <div class="trader-rank">2</div>
+                                    <div class="trader-avatar">
+                                        <img src="/api/placeholder/30/30" alt="Jessica Trade">
+                                    </div>
+                                    <div class="trader-name">Jessica Trade</div
+                                    </div>
+                                    <div class="trader-profit">+22.1%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">3</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Kevin Markets">
+                                        </div>
+                                        <div class="trader-name">Kevin Markets</div>
+                                    </div>
+                                    <div class="trader-profit">+19.8%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">4</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Olivia Charts">
+                                        </div>
+                                        <div class="trader-name">Olivia Charts</div>
+                                    </div>
+                                    <div class="trader-profit">+17.6%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">5</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Chris Forex">
+                                        </div>
+                                        <div class="trader-name">Chris Forex</div>
+                                    </div>
+                                    <div class="trader-profit">+16.4%</div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="view-details-btn">View Full Results</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Competition Card 4 -->
+                    <div class="ended-competition-card">
+                        <div class="card-image">
+                            <img src="/api/placeholder/350/200" alt="25K Funded Competition - December 2024">
+                            <div class="competition-badge">25K Funded</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>25K Funded Competition</h3>
+                            <div class="competition-meta">
+                                <div class="meta-item">
+                                    <i>📅</i>
+                                    <span>December 5-20, 2024</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i>👥</i>
+                                    <span>112 Participants</span>
+                                </div>
+                            </div>
+                            
+                            <div class="winner-section">
+                                <h4>Competition Winner</h4>
+                                <div class="winner-profile">
+                                    <div class="winner-avatar">
+                                        <img src="/api/placeholder/50/50" alt="David Scalper">
+                                    </div>
+                                    <div class="winner-info">
+                                        <h5>David Scalper</h5>
+                                        <p>+26.7% Profit</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="top-traders-toggle">
+                                View Top 5 Traders <i>▼</i>
+                            </button>
+                            
+                            <div class="top-traders">
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">1</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="David Scalper">
+                                        </div>
+                                        <div class="trader-name">David Scalper</div>
+                                    </div>
+                                    <div class="trader-profit">+26.7%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">2</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Anna Swings">
+                                        </div>
+                                        <div class="trader-name">Anna Swings</div>
+                                    </div>
+                                    <div class="trader-profit">+23.9%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">3</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Robert Markets">
+                                        </div>
+                                        <div class="trader-name">Robert Markets</div>
+                                    </div>
+                                    <div class="trader-profit">+20.5%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">4</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Mia Day">
+                                        </div>
+                                        <div class="trader-name">Mia Day</div>
+                                    </div>
+                                    <div class="trader-profit">+18.3%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">5</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="William Trader">
+                                        </div>
+                                        <div class="trader-name">William Trader</div>
+                                    </div>
+                                    <div class="trader-profit">+17.2%</div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="view-details-btn">View Full Results</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Competition Card 5 -->
+                    <div class="ended-competition-card">
+                        <div class="card-image">
+                            <img src="/api/placeholder/350/200" alt="10K Funded Competition - November 2024">
+                            <div class="competition-badge">10K Funded</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>10K Funded Competition</h3>
+                            <div class="competition-meta">
+                                <div class="meta-item">
+                                    <i>📅</i>
+                                    <span>November 10-25, 2024</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i>👥</i>
+                                    <span>142 Participants</span>
+                                </div>
+                            </div>
+                            
+                            <div class="winner-section">
+                                <h4>Competition Winner</h4>
+                                <div class="winner-profile">
+                                    <div class="winner-avatar">
+                                        <img src="/api/placeholder/50/50" alt="James FX">
+                                    </div>
+                                    <div class="winner-info">
+                                        <h5>James FX</h5>
+                                        <p>+20.4% Profit</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="top-traders-toggle">
+                                View Top 5 Traders <i>▼</i>
+                            </button>
+                            
+                            <div class="top-traders">
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">1</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="James FX">
+                                        </div>
+                                        <div class="trader-name">James FX</div>
+                                    </div>
+                                    <div class="trader-profit">+20.4%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">2</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Elena Trader">
+                                        </div>
+                                        <div class="trader-name">Elena Trader</div>
+                                    </div>
+                                    <div class="trader-profit">+18.9%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">3</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Jason Charts">
+                                        </div>
+                                        <div class="trader-name">Jason Charts</div>
+                                    </div>
+                                    <div class="trader-profit">+17.6%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">4</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Sophie Market">
+                                        </div>
+                                        <div class="trader-name">Sophie Market</div>
+                                    </div>
+                                    <div class="trader-profit">+16.4%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">5</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Mark Swing">
+                                        </div>
+                                        <div class="trader-name">Mark Swing</div>
+                                    </div>
+                                    <div class="trader-profit">+15.8%</div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="view-details-btn">View Full Results</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Competition Card 6 -->
+                    <div class="ended-competition-card">
+                        <div class="card-image">
+                            <img src="/api/placeholder/350/200" alt="25K Funded Competition - October 2024">
+                            <div class="competition-badge">25K Funded</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>25K Funded Competition</h3>
+                            <div class="competition-meta">
+                                <div class="meta-item">
+                                    <i>📅</i>
+                                    <span>October 5-20, 2024</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i>👥</i>
+                                    <span>108 Participants</span>
+                                </div>
+                            </div>
+                            
+                            <div class="winner-section">
+                                <h4>Competition Winner</h4>
+                                <div class="winner-profile">
+                                    <div class="winner-avatar">
+                                        <img src="/api/placeholder/50/50" alt="Thomas Day">
+                                    </div>
+                                    <div class="winner-info">
+                                        <h5>Thomas Day</h5>
+                                        <p>+22.8% Profit</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="top-traders-toggle">
+                                View Top 5 Traders <i>▼</i>
+                            </button>
+                            
+                            <div class="top-traders">
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">1</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Thomas Day">
+                                        </div>
+                                        <div class="trader-name">Thomas Day</div>
+                                    </div>
+                                    <div class="trader-profit">+22.8%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">2</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Laura Trade">
+                                        </div>
+                                        <div class="trader-name">Laura Trade</div>
+                                    </div>
+                                    <div class="trader-profit">+21.3%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">3</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Nick FX">
+                                        </div>
+                                        <div class="trader-name">Nick FX</div>
+                                    </div>
+                                    <div class="trader-profit">+19.5%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">4</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Claire Charts">
+                                        </div>
+                                        <div class="trader-name">Claire Charts</div>
+                                    </div>
+                                    <div class="trader-profit">+17.9%</div>
+                                </div>
+                                
+                                <div class="trader-item">
+                                    <div class="trader-profile">
+                                        <div class="trader-rank">5</div>
+                                        <div class="trader-avatar">
+                                            <img src="/api/placeholder/30/30" alt="Paul Scalper">
+                                        </div>
+                                        <div class="trader-name">Paul Scalper</div>
+                                    </div>
+                                    <div class="trader-profit">+16.8%</div>
+                                </div>
+                            </div>
+                            
+                            <a href="#" class="view-details-btn">View Full Results</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination">
+                    <a href="#" class="pagination-btn active">1</a>
+                    <a href="#" class="pagination-btn">2</a>
+                    <a href="#" class="pagination-btn">3</a>
+                    <a href="#" class="pagination-btn">4</a>
+                    <a href="#" class="pagination-btn">
+                        <i>›</i>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <h2>Ready to Join Our Next Competition?</h2>
+                <p>Take your trading skills to the next level and compete for a funded account. Join our upcoming competitions and become part of the FundedMax trading community.</p>
+                <a href="competitions.html" class="cta-btn">Join Next Competition</a>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-widget">
+                        <div class="logo">
+                            <a href="/">Funded<span>Max</span></a>
+                        </div>
+                        <p>FundedMax offers traders the opportunity to earn a funded trading account through competitive challenges. Join our community and unlock your trading potential.</p>
+                    </div>
+                    
+                    <div class="footer-widget">
+                        <h5>Quick Links</h5>
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="how-it-works.html">How It Works</a></li>
+                            <li><a href="competitions.html">Active Competitions</a></li>
+                            <li><a href="ended-competitions.html">Past Competitions</a></li>
+                            <li><a href="how-it-works.html">FAQ</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-widget">
+                        <h5>Legal</h5>
+                        <ul>
+                            <li><a href="how-it-works.html">Terms of Service</a></li>
+                            <li><a href="how-it-works.html">Refund Policy</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-widget">
+                        <h5>Contact Us</h5>
+                        <ul>
+                            <li><a href="mailto:support@fundedmax.com">support@fundedmax.com</a></li>
+                            <li><a href="https://discord.gg/bJJFzyHKAT">Join Our Discord</a></li>
+                            <li><a href="https://t.me/fundedmax">Telegram Community</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2025 FundedMax. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+        
+        <!-- JavaScript -->
+        <script>
+            // Preloader
+            window.addEventListener('load', function() {
+                const preloader = document.querySelector('.preloader');
+                setTimeout(function() {
+                    preloader.style.opacity = '0';
+                    setTimeout(function() {
+                        preloader.style.display = 'none';
+                    }, 500);
+                }, 800);
+            });
+            
+            // Mobile Menu Toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+                });
+            }
+            
+            // Top Traders Toggle
+            const traderToggles = document.querySelectorAll('.top-traders-toggle');
+            
+            traderToggles.forEach(function(toggle) {
+                toggle.addEventListener('click', function() {
+                    const topTraders = this.nextElementSibling;
+                    const icon = this.querySelector('i');
+                    
+                    if (topTraders.classList.contains('active')) {
+                        topTraders.classList.remove('active');
+                        toggle.classList.remove('active');
+                    } else {
+                        topTraders.classList.add('active');
+                        toggle.classList.add('active');
+                    }
+                });
+            });
+            
+            // Tab Functionality
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            
+            tabBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    tabBtns.forEach(function(btn) {
+                        btn.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    
+                    // Filter competitions based on selected tab
+                    // This is a placeholder for the actual filtering logic
+                    const selectedCategory = this.textContent.trim();
+                    console.log('Selected category:', selectedCategory);
+                    
+                    // For a real implementation, you would filter the competition cards here
+                    // For example:
+                    // const competitionCards = document.querySelectorAll('.ended-competition-card');
+                    // competitionCards.forEach(function(card) {
+                    //     const category = card.querySelector('.competition-badge').textContent;
+                    //     if (selectedCategory === 'All Competitions' || category.includes(selectedCategory.split(' ')[0])) {
+                    //         card.style.display = 'block';
+                    //     } else {
+                    //         card.style.display = 'none';
+                    //     }
+                    // });
+                });
+            });
+        </script>
+    </body>
+    </html>
